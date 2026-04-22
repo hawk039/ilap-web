@@ -7,9 +7,7 @@ export const signupContent: SignupViewModel = {
     icon: "gavel",
   },
   navigation: [
-    { label: "Home", href: routes.home },
     { label: "About", href: routes.about },
-    { label: "Legal Resources", href: routes.legalResources },
     { label: "Contact", href: routes.contact },
   ],
   headerAction: {

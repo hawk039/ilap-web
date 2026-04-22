@@ -1,9 +1,13 @@
 export const routes = {
   home: "/",
+  dashboard: "/dashboard",
   about: "/about",
+  chat: "/chat",
+  legalCategories: "/legal-categories",
   legalResources: "/legal-resources",
   contact: "/contact",
   helpCenter: "/help-center",
+  profile: "/profile",
   support: "/support",
   signIn: "/sign-in",
   forgotPassword: "/forgot-password",

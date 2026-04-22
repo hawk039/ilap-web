@@ -1,5 +1,5 @@
 import { createSimplePageContent } from "@/shared/simple-page/createSimplePageContent";
-import SimplePage from "@/shared/simple-page/SimplePage";
+import SimplePanel from "@/shared/simple-page/SimplePanel";
 
 export default function LegalResourcesPage() {
   const page = createSimplePageContent(
@@ -7,5 +7,5 @@ export default function LegalResourcesPage() {
     "This page is reserved for resource directories, legal guidance, and practitioner materials.",
   );
 
-  return <SimplePage description={page.description} title={page.title} />;
+  return <SimplePanel description={page.description} title={page.title} />;
 }

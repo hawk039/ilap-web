@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
-import { initialSignupActionState, submitSignupAction } from "../server/actions";
+import { useRouter } from "next/navigation";
+import { routes } from "@/lib/routes";
 import { useSignupForm } from "../hooks/useSignupForm";
-import type { SignupFieldViewModel, SignupForm as SignupFormType, SignupActionState } from "../types";
+import type { SignupFieldViewModel, SignupForm as SignupFormType } from "../types";
 import AppIcon from "@/shared/icons/AppIcon";
 import styles from "../signup.module.css";
 
@@ -61,13 +61,16 @@ type SignupFormProps = {
 
 export default function SignupForm({ form }: SignupFormProps) {
   const signupForm = useSignupForm();
-  const [actionState, formAction, isPending] = useActionState<SignupActionState, FormData>(
-    submitSignupAction,
-    initialSignupActionState,
-  );
+  const router = useRouter();
 
   return (
-    <form action={formAction} className={styles.form}>
+    <form
+      className={styles.form}
+      onSubmit={(event) => {
+        event.preventDefault();
+        router.push(routes.dashboard);
+      }}
+    >
       {form.fields.map((field) => (
         <SignupField
           field={field}
@@ -76,18 +79,6 @@ export default function SignupForm({ form }: SignupFormProps) {
           onTogglePassword={signupForm.togglePasswordVisibility}
         />
       ))}
-
-      {actionState.status !== "idle" ? (
-        <p
-          className={
-            actionState.status === "error"
-              ? styles.formMessageError
-              : styles.formMessageSuccess
-          }
-        >
-          {actionState.message}
-        </p>
-      ) : null}
 
       <div className={styles.termsRow}>
         <input
@@ -109,8 +100,8 @@ export default function SignupForm({ form }: SignupFormProps) {
         </label>
       </div>
 
-      <button className={styles.submitButton} disabled={isPending} type="submit">
-        <span>{isPending ? "Submitting..." : form.submitLabel}</span>
+      <button className={styles.submitButton} type="submit">
+        <span>{form.submitLabel}</span>
         <AppIcon className={styles.submitArrow} name="arrowForward" />
       </button>
 

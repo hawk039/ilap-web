@@ -1,0 +1,292 @@
+.contentWrap {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.headerRow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-top: 16px;
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.pageSubtitle {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+}
+
+.searchWrap {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+}
+
+.searchInput {
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  background: #f1f5f9;
+  padding: 12px 16px 12px 40px;
+  font-size: 0.875rem;
+  color: var(--color-text);
+}
+
+.searchInput:focus {
+  outline: 2px solid rgba(26, 34, 127, 0.16);
+}
+
+.chatList {
+  display: grid;
+  gap: 16px;
+}
+
+.chatCard,
+.chatCardInsight {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: var(--color-surface);
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+.chatCard:hover,
+.chatCardInsight:hover {
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+}
+
+.chatCardInsight {
+  border-left: 4px solid #f97316;
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+.chatAccent {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: #f97316;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.chatCard:hover .chatAccent {
+  opacity: 1;
+}
+
+.chatCopy {
+  flex: 1;
+}
+
+.chatMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.chatMetaLeft {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.categoryChip,
+.aiInsightChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.categoryChip {
+  background: #f1f5f9;
+  color: var(--color-text-muted);
+}
+
+.aiInsightChip {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.aiInsightIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.chatTimestamp {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.chatTitle {
+  margin: 0 0 4px;
+  color: var(--color-brand);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.chatPreview {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.chatActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  background: #f8fafc;
+}
+
+.iconMuted,
+.iconBookmarked {
+  width: 18px;
+  height: 18px;
+}
+
+.iconMuted {
+  color: var(--color-text-muted);
+}
+
+.iconBookmarked {
+  color: #f97316;
+}
+
+.viewChatButton {
+  border: 0;
+  border-radius: 12px;
+  background: #e0e7ff;
+  padding: 10px 16px;
+  color: var(--color-brand);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.viewChatButton:hover {
+  background: var(--color-brand);
+  color: var(--color-surface);
+}
+
+.emptyState {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px dashed #e2e8f0;
+  border-radius: 24px;
+  padding: 32px;
+  text-align: center;
+}
+
+.emptyStateIconWrap {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  border-radius: 999px;
+  background: #f1f5f9;
+}
+
+.emptyStateIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-muted);
+}
+
+.emptyStateTitle {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 800;
+}
+
+.emptyStateDescription {
+  margin: 6px 0 16px;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.emptyStateButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--color-brand);
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.emptyStateButtonIcon {
+  width: 14px;
+  height: 14px;
+}
+
+@media (min-width: 768px) {
+  .headerRow {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chatCard,
+  .chatCardInsight {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .chatMeta {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

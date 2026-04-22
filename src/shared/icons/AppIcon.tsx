@@ -11,7 +11,26 @@ export type AppIconName =
   | "visibilityOff"
   | "arrowForward"
   | "keyboardBackspace"
-  | "helpOutline";
+  | "helpOutline"
+  | "notifications"
+  | "settings"
+  | "add"
+  | "chat"
+  | "editNote"
+  | "bookmark"
+  | "archive"
+  | "menuBook"
+  | "search"
+  | "star"
+  | "starFilled"
+  | "smartToy"
+  | "historyEdu"
+  | "accountBalance"
+  | "domain"
+  | "terminal"
+  | "shoppingBag"
+  | "work"
+  | "familyHistory";
 
 type AppIconProps = {
   name: AppIconName;
@@ -115,6 +134,157 @@ export default function AppIcon({ name, className }: AppIconProps) {
           <circle cx="12" cy="12" r="9" />
           <path d="M9.1 9a3 3 0 1 1 5.6 1.5c-.6 1-1.7 1.4-2.3 2.2-.2.3-.4.7-.4 1.3" />
           <path d="M12 17h.01" />
+        </svg>
+      );
+    case "notifications":
+      return (
+        <svg {...commonProps}>
+          <path d="M6 8a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9" />
+          <path d="M10 21a2 2 0 0 0 4 0" />
+        </svg>
+      );
+    case "settings":
+      return (
+        <svg {...commonProps}>
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 0 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 0 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5h.1a1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 0 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.4 1z" />
+        </svg>
+      );
+    case "add":
+      return (
+        <svg {...commonProps}>
+          <path d="M12 5v14" />
+          <path d="M5 12h14" />
+        </svg>
+      );
+    case "chat":
+      return (
+        <svg {...commonProps}>
+          <path d="M7 10h10" />
+          <path d="M7 14h6" />
+          <path d="M4 5h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
+        </svg>
+      );
+    case "editNote":
+      return (
+        <svg {...commonProps}>
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4Z" />
+        </svg>
+      );
+    case "bookmark":
+      return (
+        <svg {...commonProps}>
+          <path d="M6 3h12v18l-6-4-6 4V3Z" />
+        </svg>
+      );
+    case "archive":
+      return (
+        <svg {...commonProps}>
+          <rect x="3" y="4" width="18" height="4" rx="1" />
+          <path d="M5 8h14v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8Z" />
+          <path d="M10 12h4" />
+        </svg>
+      );
+    case "menuBook":
+      return (
+        <svg {...commonProps}>
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />
+        </svg>
+      );
+    case "search":
+      return (
+        <svg {...commonProps}>
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+      );
+    case "star":
+      return (
+        <svg {...commonProps}>
+          <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3Z" />
+        </svg>
+      );
+    case "starFilled":
+      return (
+        <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+          <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3Z" />
+        </svg>
+      );
+    case "smartToy":
+      return (
+        <svg {...commonProps}>
+          <rect x="5" y="8" width="14" height="10" rx="2" />
+          <path d="M12 4v4" />
+          <path d="M9 13h.01" />
+          <path d="M15 13h.01" />
+          <path d="M9 16h6" />
+        </svg>
+      );
+    case "historyEdu":
+      return (
+        <svg {...commonProps}>
+          <path d="M4 5h10a4 4 0 0 1 4 4v10H8a4 4 0 0 0-4 4V5Z" />
+          <path d="M8 19h12V9a4 4 0 0 0-4-4" />
+          <path d="M8 10h8" />
+          <path d="M8 14h5" />
+        </svg>
+      );
+    case "accountBalance":
+      return (
+        <svg {...commonProps}>
+          <path d="M3 10h18" />
+          <path d="M5 10v7" />
+          <path d="M9 10v7" />
+          <path d="M15 10v7" />
+          <path d="M19 10v7" />
+          <path d="M2 21h20" />
+          <path d="m12 3 9 4H3l9-4Z" />
+        </svg>
+      );
+    case "domain":
+      return (
+        <svg {...commonProps}>
+          <path d="M3 21h18" />
+          <path d="M5 21V7l7-4 7 4v14" />
+          <path d="M9 9h.01" />
+          <path d="M9 13h.01" />
+          <path d="M9 17h.01" />
+          <path d="M15 9h.01" />
+          <path d="M15 13h.01" />
+          <path d="M15 17h.01" />
+        </svg>
+      );
+    case "terminal":
+      return (
+        <svg {...commonProps}>
+          <path d="m4 17 6-6-6-6" />
+          <path d="M12 19h8" />
+        </svg>
+      );
+    case "shoppingBag":
+      return (
+        <svg {...commonProps}>
+          <path d="M6 7h12l-1 13H7L6 7Z" />
+          <path d="M9 7a3 3 0 1 1 6 0" />
+        </svg>
+      );
+    case "work":
+      return (
+        <svg {...commonProps}>
+          <rect x="3" y="7" width="18" height="13" rx="2" />
+          <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          <path d="M3 12h18" />
+        </svg>
+      );
+    case "familyHistory":
+      return (
+        <svg {...commonProps}>
+          <circle cx="8" cy="8" r="3" />
+          <circle cx="16" cy="8" r="3" />
+          <path d="M2 21a6 6 0 0 1 12 0" />
+          <path d="M10 21a6 6 0 0 1 12 0" />
         </svg>
       );
   }
