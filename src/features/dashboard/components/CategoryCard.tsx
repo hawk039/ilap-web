@@ -1,3 +1,7 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { createChatRoute } from "@/lib/routes";
 import AppIcon from "@/shared/icons/AppIcon";
 import type { DashboardCategory } from "../types";
 import styles from "../dashboard.module.css";
@@ -7,10 +11,25 @@ type CategoryCardProps = {
 };
 
 export default function CategoryCard({ category }: CategoryCardProps) {
+  const router = useRouter();
   const isSecondaryAccent = category.accent === "secondary";
 
+  function handleOpenCategory() {
+    router.push(
+      createChatRoute({
+        lawType: category.lawType,
+        sessionId: crypto.randomUUID(),
+      }),
+    );
+  }
+
   return (
-    <article className={styles.categoryCard}>
+    <button
+      aria-label={`Open ${category.title}`}
+      className={styles.categoryCard}
+      onClick={handleOpenCategory}
+      type="button"
+    >
       <div
         className={
           isSecondaryAccent ? styles.categoryAccentSecondary : styles.categoryAccent
@@ -40,16 +59,14 @@ export default function CategoryCard({ category }: CategoryCardProps) {
 
       <div className={styles.categoryFooter}>
         <span className={styles.categoryPrecedents}>{category.precedentCount}</span>
-        <button
+        <span
           className={
             isSecondaryAccent ? styles.categoryButtonSecondary : styles.categoryButton
           }
-          type="button"
-          aria-label={`Open ${category.title}`}
         >
           <AppIcon className={styles.categoryButtonIcon} name="arrowForward" />
-        </button>
+        </span>
       </div>
-    </article>
+    </button>
   );
 }

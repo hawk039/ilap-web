@@ -12,6 +12,7 @@ export const dashboardContent: DashboardViewModel = {
     {
       id: "criminal-law",
       title: "Criminal Law",
+      lawType: "Criminal Law",
       description:
         "Research penal codes, procedural defenses, and historical verdict summaries for felony cases.",
       precedentCount: "1,240 Precedents",
@@ -21,6 +22,7 @@ export const dashboardContent: DashboardViewModel = {
     {
       id: "property-law",
       title: "Property Law",
+      lawType: "Property Law",
       description:
         "Real estate statutes, land disputes, zoning regulations, and digital asset ownership protocols.",
       precedentCount: "856 Precedents",
@@ -30,6 +32,7 @@ export const dashboardContent: DashboardViewModel = {
     {
       id: "cyber-law",
       title: "Cyber Law",
+      lawType: "Cyber Law",
       description:
         "Navigating data privacy, intellectual property in AI, and cross-border digital jurisdiction.",
       precedentCount: "420 Precedents",
@@ -41,6 +44,7 @@ export const dashboardContent: DashboardViewModel = {
     {
       id: "consumer-rights",
       title: "Consumer Rights",
+      lawType: "Consumer Rights",
       description:
         "Trade practices, liability protection, and institutional compliance standards for consumer safety.",
       precedentCount: "2,110 Precedents",
@@ -50,6 +54,7 @@ export const dashboardContent: DashboardViewModel = {
     {
       id: "employment-law",
       title: "Employment Law",
+      lawType: "Employment Law",
       description:
         "Labor union regulations, discrimination protocols, and contractual obligations in the modern workforce.",
       precedentCount: "1,560 Precedents",
@@ -59,6 +64,7 @@ export const dashboardContent: DashboardViewModel = {
     {
       id: "family-law",
       title: "Family Law",
+      lawType: "Family Law",
       description:
         "Guardianship statutes, matrimonial litigation, and inheritance frameworks for institutional estates.",
       precedentCount: "945 Precedents",

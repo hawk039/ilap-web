@@ -3,6 +3,7 @@ import type { AppIconName } from "@/shared/icons/AppIcon";
 export type DashboardCategory = {
   id: string;
   title: string;
+  lawType: string;
   description: string;
   precedentCount: string;
   code: string;
