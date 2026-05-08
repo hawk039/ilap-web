@@ -1,53 +1,24 @@
-export type IlapChatRequest = {
-  query: string;
-  lawType: string;
-  sessionId: string;
-  contextTurnId?: string;
-};
+import type {
+  AskConversationResponse,
+  ConversationMessage,
+  ConversationSummary,
+} from "@/lib/api/types";
 
-export type IlapCitation = {
-  act: string;
-  section: string;
-  effective_from: string;
-};
+export type ChatMessage = ConversationMessage;
 
-export type IlapProofSource = {
-  act: string;
-  section: string;
-  text_snippet: string;
-  relevance_score: number;
-};
+export type ChatConversation = ConversationSummary;
 
-export type IlapProof = {
-  sources: IlapProofSource[];
-  reasoning: string;
-};
-
-export type IlapChatResponse = {
-  answer: string;
-  citations: IlapCitation[];
-  confidence: number;
-  disclaimer: string;
-  sessionId: string;
-  turnId?: string;
-  contextTurnId?: string;
-  category_note: string;
-  proof: IlapProof;
-};
-
-export type ChatRole = "user" | "assistant";
-
-export type ChatMessage = {
-  id: string;
-  role: ChatRole;
-  text: string;
-  lawType?: string;
-  response?: IlapChatResponse;
-};
-
-export type ChatConversationSnapshot = {
-  sessionId: string;
-  lawType: string;
-  contextTurnId: string | null;
+export type ChatState = {
+  composerValue: string;
+  conversation: ChatConversation | null;
+  conversations: ChatConversation[];
+  errorMessage: string;
+  isLoadingConversation: boolean;
+  isLoadingConversations: boolean;
+  isSubmitting: boolean;
   messages: ChatMessage[];
+  setComposerValue: (value: string) => void;
+  submitQuery: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
 };
+
+export type AskResult = AskConversationResponse;

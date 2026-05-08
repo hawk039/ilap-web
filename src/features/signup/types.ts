@@ -72,8 +72,3 @@ export type SignupSubmission = {
   password: string;
   acceptedTerms: boolean;
 };
-
-export type SignupActionState = {
-  message: string;
-  status: "idle" | "success" | "error";
-};

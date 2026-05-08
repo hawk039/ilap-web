@@ -1,17 +1,18 @@
 export const chatContent = {
   emptyState: {
     eyebrow: "ILAP Conversational Research",
-    title: "Choose a legal category to begin",
+    title: "Choose a conversation to continue",
     description:
-      "Start from the dashboard so ILAP can attach the correct law type to your conversation and keep the context across follow-up questions.",
+      "Start from the dashboard to open a new legal category conversation, or jump back into an existing thread below.",
     primaryLabel: "Go to categories",
+    secondaryTitle: "Recent conversations",
+    noConversations: "No saved conversations yet.",
   },
   activeState: {
     title: "Legal research assistant",
-    subtitle:
-      "ILAP carries the latest turn context for follow-up questions inside the same conversation.",
-    newConversationLabel: "New conversation",
-    composerPlaceholder: "Ask a question about this legal category...",
+    subtitle: "Continue this backend-backed legal conversation.",
+    newConversationLabel: "Back to categories",
+    composerPlaceholder: "Ask a follow-up question...",
     submitLabel: "Send",
     helperText:
       "Responses are informational and should be reviewed with a qualified legal professional.",
@@ -27,6 +28,7 @@ export const chatContent = {
   },
   errors: {
     missingLawType: "Choose a legal category before starting a conversation.",
+    missingConversation: "Open a conversation before sending a question.",
     emptyQuery: "Enter a question before sending it to ILAP.",
     failedRequest: "ILAP could not answer right now. Please try again.",
   },

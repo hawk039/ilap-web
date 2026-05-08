@@ -1,16 +1,4 @@
-import type { AppIconName } from "@/shared/icons/AppIcon";
-
-export type DashboardCategory = {
-  id: string;
-  title: string;
-  lawType: string;
-  description: string;
-  precedentCount: string;
-  code: string;
-  icon: AppIconName;
-  accent?: "primary" | "secondary";
-  highlightLabel?: string;
-};
+import type { LegalCategory } from "@/lib/api/types";
 
 export type DashboardViewModel = {
   hero: {
@@ -19,7 +7,6 @@ export type DashboardViewModel = {
     description: string;
   };
   searchPlaceholder: string;
-  categories: DashboardCategory[];
   cta: {
     title: string;
     description: string;
@@ -30,4 +17,11 @@ export type DashboardViewModel = {
     value: string;
     label: string;
   }>;
+};
+
+export type DashboardCategory = LegalCategory & {
+  accent?: "primary" | "secondary";
+  code?: string;
+  highlightLabel?: string;
+  precedentCount?: string;
 };

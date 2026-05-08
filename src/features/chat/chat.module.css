@@ -49,6 +49,12 @@
   gap: 20px;
 }
 
+.statusText {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
 .messageList {
   display: grid;
   gap: 16px;
@@ -370,6 +376,48 @@
 
 .emptyPanel {
   max-width: 720px;
+}
+
+.recentConversationSection {
+  width: 100%;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+.recentConversationTitle {
+  margin: 0;
+  color: var(--color-brand);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.recentConversationList {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.recentConversationLink {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  text-align: left;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.recentConversationLink:hover {
+  border-color: rgba(26, 34, 127, 0.3);
+  transform: translateY(-1px);
+}
+
+.recentConversationLink span {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
 }
 
 @keyframes pulse {

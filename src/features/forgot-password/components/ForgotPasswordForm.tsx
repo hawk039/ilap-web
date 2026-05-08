@@ -1,15 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { FormEvent, useState } from "react";
+import { apiClient, ApiError } from "@/lib/api/client";
 import AppIcon from "@/shared/icons/AppIcon";
-import {
-  initialForgotPasswordActionState,
-  submitForgotPasswordAction,
-} from "../server/actions";
-import type {
-  ForgotPasswordActionState,
-  ForgotPasswordViewModel,
-} from "../types";
+import { validateForgotPasswordSubmission } from "../lib/validation";
+import type { ForgotPasswordViewModel } from "../types";
 import styles from "../forgot-password.module.css";
 
 type ForgotPasswordFormProps = {
@@ -19,13 +14,51 @@ type ForgotPasswordFormProps = {
 export default function ForgotPasswordForm({
   content,
 }: ForgotPasswordFormProps) {
-  const [actionState, formAction, isPending] = useActionState<
-    ForgotPasswordActionState,
-    FormData
-  >(submitForgotPasswordAction, initialForgotPasswordActionState);
+  const [isPending, setIsPending] = useState(false);
+  const [formMessage, setFormMessage] = useState<{
+    message: string;
+    status: "success" | "error";
+  } | null>(null);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
+    const validation = validateForgotPasswordSubmission({ email });
+
+    if (!validation.ok) {
+      setFormMessage({
+        message: validation.message,
+        status: "error",
+      });
+      return;
+    }
+
+    setIsPending(true);
+    setFormMessage(null);
+
+    try {
+      await apiClient.post("/auth/forgot-password", { email });
+      setFormMessage({
+        message: "If the email exists, reset instructions will be sent shortly.",
+        status: "success",
+      });
+    } catch (error) {
+      setFormMessage({
+        message:
+          error instanceof ApiError
+            ? error.message
+            : "Unable to submit the reset request right now.",
+        status: "error",
+      });
+    } finally {
+      setIsPending(false);
+    }
+  }
 
   return (
-    <form action={formAction} className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div>
         <label className={styles.inputLabel} htmlFor="email">
           {content.emailLabel}
@@ -42,15 +75,15 @@ export default function ForgotPasswordForm({
         </div>
       </div>
 
-      {actionState.status !== "idle" ? (
+      {formMessage ? (
         <p
           className={
-            actionState.status === "error"
+            formMessage.status === "error"
               ? styles.formMessageError
               : styles.formMessageSuccess
           }
         >
-          {actionState.message}
+          {formMessage.message}
         </p>
       ) : null}
 

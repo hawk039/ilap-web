@@ -15,18 +15,14 @@ export default function ChatMessageCard({ message }: ChatMessageCardProps) {
     );
   }
 
-  const response = message.response;
-
-  if (!response) {
-    return null;
-  }
-
   return (
     <article className={styles.assistantMessage}>
       <div className={styles.messageMeta}>ILAP</div>
-      <p className={styles.assistantMessageText}>{response.answer}</p>
+      <p className={styles.assistantMessageText}>{message.text}</p>
 
-      <p className={styles.disclaimer}>{response.disclaimer}</p>
+      {message.disclaimer ? (
+        <p className={styles.disclaimer}>{message.disclaimer}</p>
+      ) : null}
     </article>
   );
 }

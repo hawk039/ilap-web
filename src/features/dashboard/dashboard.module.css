@@ -86,6 +86,21 @@
   gap: 24px;
 }
 
+.statusText,
+.statusError {
+  margin: 0 0 20px;
+  font-size: 0.95rem;
+}
+
+.statusText {
+  color: var(--color-text-muted);
+}
+
+.statusError {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
 .categoryCard {
   position: relative;
   display: block;
@@ -101,6 +116,11 @@
   transition:
     box-shadow 0.25s ease,
     transform 0.25s ease;
+}
+
+.categoryCard:disabled {
+  cursor: progress;
+  opacity: 0.8;
 }
 
 .categoryCard:focus-visible {

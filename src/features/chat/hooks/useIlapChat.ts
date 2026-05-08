@@ -1,94 +1,125 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import { chatContent } from "../constants";
+import { apiClient, ApiError } from "@/lib/api/client";
 import type {
-  ChatConversationSnapshot,
-  ChatMessage,
-  IlapChatRequest,
-  IlapChatResponse,
-} from "../types";
-
-const storagePrefix = "ilap-chat";
+  AskConversationResponse,
+  ConversationMessage,
+  ConversationSummary,
+} from "@/lib/api/types";
+import { chatContent } from "../constants";
 
 type UseIlapChatArgs = {
-  lawType: string;
-  sessionId: string;
+  conversationId: string;
 };
 
-function getStorageKey(sessionId: string) {
-  return `${storagePrefix}:${sessionId}`;
-}
-
-export function useIlapChat({ lawType, sessionId }: UseIlapChatArgs) {
+export function useIlapChat({ conversationId }: UseIlapChatArgs) {
   const [composerValue, setComposerValue] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [contextTurnId, setContextTurnId] = useState<string | null>(null);
+  const [conversation, setConversation] = useState<ConversationSummary | null>(null);
+  const [conversations, setConversations] = useState<ConversationSummary[]>([]);
+  const [messages, setMessages] = useState<ConversationMessage[]>([]);
+  const [isLoadingConversation, setIsLoadingConversation] = useState(false);
+  const [isLoadingConversations, setIsLoadingConversations] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const storageKey = useMemo(
-    () => (sessionId ? getStorageKey(sessionId) : ""),
-    [sessionId],
-  );
 
   useEffect(() => {
-    if (!storageKey || typeof window === "undefined") {
-      setMessages([]);
-      setContextTurnId(null);
-      return;
-    }
+    let isMounted = true;
 
-    const savedConversation = window.sessionStorage.getItem(storageKey);
+    async function loadConversationIndex() {
+      setIsLoadingConversations(true);
 
-    if (!savedConversation) {
-      setMessages([]);
-      setContextTurnId(null);
-      return;
-    }
+      try {
+        const response = await apiClient.get<ConversationSummary[]>(
+          "/conversations?limit=20&offset=0",
+          { auth: true },
+        );
 
-    try {
-      const parsedConversation = JSON.parse(
-        savedConversation,
-      ) as ChatConversationSnapshot;
-
-      if (
-        parsedConversation.sessionId !== sessionId ||
-        parsedConversation.lawType !== lawType
-      ) {
-        setMessages([]);
-        setContextTurnId(null);
-        return;
+        if (isMounted) {
+          setConversations(response);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setErrorMessage(
+            error instanceof ApiError
+              ? error.message
+              : "Unable to load conversations right now.",
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingConversations(false);
+        }
       }
-
-      setMessages(parsedConversation.messages);
-      setContextTurnId(parsedConversation.contextTurnId);
-    } catch {
-      setMessages([]);
-      setContextTurnId(null);
     }
-  }, [lawType, sessionId, storageKey]);
+
+    loadConversationIndex();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
-    if (!storageKey || typeof window === "undefined" || !lawType) {
+    if (!conversationId) {
+      setConversation(null);
+      setMessages([]);
       return;
     }
 
-    const snapshot: ChatConversationSnapshot = {
-      sessionId,
-      lawType,
-      contextTurnId,
-      messages,
-    };
+    let isMounted = true;
 
-    window.sessionStorage.setItem(storageKey, JSON.stringify(snapshot));
-  }, [contextTurnId, lawType, messages, sessionId, storageKey]);
+    async function loadConversation() {
+      setIsLoadingConversation(true);
+      setErrorMessage("");
+
+      try {
+        const [conversationResponse, messagesResponse] = await Promise.all([
+          apiClient.get<ConversationSummary>(`/conversations/${conversationId}`, {
+            auth: true,
+          }),
+          apiClient.get<ConversationMessage[]>(
+            `/conversations/${conversationId}/messages?limit=100&offset=0`,
+            { auth: true },
+          ),
+        ]);
+
+        if (!isMounted) {
+          return;
+        }
+
+        setConversation(conversationResponse);
+        setMessages(messagesResponse);
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+
+        setErrorMessage(
+          error instanceof ApiError
+            ? error.message
+            : "Unable to load this conversation right now.",
+        );
+      } finally {
+        if (isMounted) {
+          setIsLoadingConversation(false);
+        }
+      }
+    }
+
+    loadConversation();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [conversationId]);
 
   async function submitQuery(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!lawType || !sessionId) {
-      setErrorMessage(chatContent.errors.missingLawType);
+    if (!conversationId) {
+      setErrorMessage(chatContent.errors.missingConversation);
       return;
     }
 
@@ -102,66 +133,33 @@ export function useIlapChat({ lawType, sessionId }: UseIlapChatArgs) {
     setErrorMessage("");
     setIsSubmitting(true);
 
-    const userMessage: ChatMessage = {
-      id: crypto.randomUUID(),
-      role: "user",
-      text: query,
-      lawType,
-    };
-
-    setMessages((currentMessages) => [...currentMessages, userMessage]);
-    setComposerValue("");
-
     try {
-      const payload: IlapChatRequest = {
-        query,
-        lawType,
-        sessionId,
-        contextTurnId: contextTurnId ?? undefined,
-      };
-
-      const response = await fetch("/api/ilap-chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const parsedResponse = (await response.json()) as
-        | IlapChatResponse
-        | { error?: string };
-
-      if (!response.ok) {
-        const errorMessage =
-          "error" in parsedResponse
-            ? parsedResponse.error
-            : chatContent.errors.failedRequest;
-        throw new Error(errorMessage ?? chatContent.errors.failedRequest);
-      }
-
-      if ("error" in parsedResponse) {
-        throw new Error(parsedResponse.error ?? chatContent.errors.failedRequest);
-      }
-
-      const successResponse = parsedResponse as IlapChatResponse;
-      const nextContextTurnId =
-        successResponse.turnId ?? successResponse.contextTurnId ?? null;
-
-      setContextTurnId(nextContextTurnId);
-      setMessages((currentMessages) => [
-        ...currentMessages,
+      await apiClient.post<AskConversationResponse>(
+        `/conversations/${conversationId}/ask`,
         {
-          id: crypto.randomUUID(),
-          role: "assistant",
-          text: successResponse.answer,
-          response: successResponse,
+          idempotencyKey: crypto.randomUUID(),
+          query,
         },
-      ]);
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error ? error.message : chatContent.errors.failedRequest,
+        { auth: true },
       );
+
+      const refreshedMessages = await apiClient.get<ConversationMessage[]>(
+        `/conversations/${conversationId}/messages?limit=100&offset=0`,
+        { auth: true },
+      );
+
+      setMessages(refreshedMessages);
+      setComposerValue("");
+    } catch (error) {
+      if (error instanceof ApiError) {
+        const requestIdSuffix = error.requestId
+          ? ` Request ID: ${error.requestId}.`
+          : "";
+
+        setErrorMessage(`${error.message}${requestIdSuffix}`);
+      } else {
+        setErrorMessage(chatContent.errors.failedRequest);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -169,7 +167,11 @@ export function useIlapChat({ lawType, sessionId }: UseIlapChatArgs) {
 
   return {
     composerValue,
+    conversation,
+    conversations,
     errorMessage,
+    isLoadingConversation,
+    isLoadingConversations,
     isSubmitting,
     messages,
     setComposerValue,

@@ -61,8 +61,3 @@ export const signInContent: SignInViewModel = {
     systemStatus: "Systems Operational",
   },
 };
-
-export const initialSignInActionState = {
-  message: "",
-  status: "idle",
-} as const;

@@ -84,6 +84,21 @@
   background: #f8fafc;
 }
 
+.signOutButton {
+  border: 0;
+  border-radius: 12px;
+  background: #eef2ff;
+  padding: 10px 14px;
+  color: var(--color-brand);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.signOutButton:hover {
+  background: #e0e7ff;
+}
+
 .topIcon {
   width: 20px;
   height: 20px;

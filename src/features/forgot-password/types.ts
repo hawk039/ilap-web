@@ -37,8 +37,3 @@ export type ForgotPasswordViewModel = {
 export type ForgotPasswordSubmission = {
   email: string;
 };
-
-export type ForgotPasswordActionState = {
-  message: string;
-  status: "idle" | "success" | "error";
-};

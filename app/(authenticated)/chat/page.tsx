@@ -2,8 +2,7 @@ import ChatHistoryScreen from "@/features/chat/ChatHistoryScreen";
 
 type ChatPageProps = {
   searchParams: Promise<{
-    lawType?: string;
-    sessionId?: string;
+    conversationId?: string;
   }>;
 };
 
@@ -12,8 +11,7 @@ export default async function ChatPage({ searchParams }: ChatPageProps) {
 
   return (
     <ChatHistoryScreen
-      lawType={params.lawType ?? ""}
-      sessionId={params.sessionId ?? ""}
+      conversationId={params.conversationId ?? ""}
     />
   );
 }

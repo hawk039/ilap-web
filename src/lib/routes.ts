@@ -16,18 +16,3 @@ export const routes = {
   privacy: "/privacy",
   security: "/security",
 } as const;
-
-export function createChatRoute({
-  lawType,
-  sessionId,
-}: {
-  lawType: string;
-  sessionId: string;
-}) {
-  const params = new URLSearchParams({
-    lawType,
-    sessionId,
-  });
-
-  return `${routes.chat}?${params.toString()}`;
-}

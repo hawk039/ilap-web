@@ -49,8 +49,3 @@ export type SignInSubmission = {
   email: string;
   password: string;
 };
-
-export type SignInActionState = {
-  message: string;
-  status: "idle" | "success" | "error";
-};

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import AuthenticatedRoute from "@/shared/auth/AuthenticatedRoute";
 import AuthenticatedShell from "@/shared/layouts/authenticated-shell/AuthenticatedShell";
 
 type AuthenticatedLayoutProps = {
@@ -8,5 +9,9 @@ type AuthenticatedLayoutProps = {
 export default function AuthenticatedLayout({
   children,
 }: AuthenticatedLayoutProps) {
-  return <AuthenticatedShell>{children}</AuthenticatedShell>;
+  return (
+    <AuthenticatedRoute>
+      <AuthenticatedShell>{children}</AuthenticatedShell>
+    </AuthenticatedRoute>
+  );
 }

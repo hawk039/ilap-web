@@ -1,9 +1,14 @@
 "use client";
 
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { apiClient, ApiError } from "@/lib/api/client";
+import type { AuthResponse } from "@/lib/api/types";
 import { routes } from "@/lib/routes";
+import { useAuth } from "@/shared/auth/AuthProvider";
 import { useSignupForm } from "../hooks/useSignupForm";
+import { validateSignupSubmission } from "../lib/validation";
 import type { SignupFieldViewModel, SignupForm as SignupFormType } from "../types";
 import AppIcon from "@/shared/icons/AppIcon";
 import styles from "../signup.module.css";
@@ -60,17 +65,63 @@ type SignupFormProps = {
 };
 
 export default function SignupForm({ form }: SignupFormProps) {
+  const auth = useAuth();
   const signupForm = useSignupForm();
   const router = useRouter();
+  const [isPending, setIsPending] = useState(false);
+  const [formMessage, setFormMessage] = useState<{
+    message: string;
+    status: "success" | "error";
+  } | null>(null);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const submission = {
+      acceptedTerms: formData.get("terms") === "on",
+      email: String(formData.get("email") ?? "").trim(),
+      name: String(formData.get("name") ?? "").trim(),
+      password: String(formData.get("password") ?? ""),
+    };
+
+    const validation = validateSignupSubmission(submission);
+
+    if (!validation.ok) {
+      setFormMessage({
+        message: validation.message,
+        status: "error",
+      });
+      return;
+    }
+
+    setIsPending(true);
+    setFormMessage(null);
+
+    try {
+      const response = await apiClient.post<AuthResponse>("/auth/register", {
+        email: submission.email,
+        fullName: submission.name,
+        password: submission.password,
+      });
+
+      auth.setAuthSession(response);
+      router.push(routes.dashboard);
+    } catch (error) {
+      setFormMessage({
+        message:
+          error instanceof ApiError
+            ? error.message
+            : "Unable to create your account right now.",
+        status: "error",
+      });
+    } finally {
+      setIsPending(false);
+    }
+  }
 
   return (
-    <form
-      className={styles.form}
-      onSubmit={(event) => {
-        event.preventDefault();
-        router.push(routes.dashboard);
-      }}
-    >
+    <form className={styles.form} onSubmit={handleSubmit}>
       {form.fields.map((field) => (
         <SignupField
           field={field}
@@ -100,8 +151,20 @@ export default function SignupForm({ form }: SignupFormProps) {
         </label>
       </div>
 
-      <button className={styles.submitButton} type="submit">
-        <span>{form.submitLabel}</span>
+      {formMessage ? (
+        <p
+          className={
+            formMessage.status === "error"
+              ? styles.formMessageError
+              : styles.formMessageSuccess
+          }
+        >
+          {formMessage.message}
+        </p>
+      ) : null}
+
+      <button className={styles.submitButton} disabled={isPending} type="submit">
+        <span>{isPending ? "Creating Account..." : form.submitLabel}</span>
         <AppIcon className={styles.submitArrow} name="arrowForward" />
       </button>
 

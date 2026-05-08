@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { apiClient, ApiError } from "@/lib/api/client";
+import type { LegalCategory } from "@/lib/api/types";
 import AppIcon from "@/shared/icons/AppIcon";
 import { dashboardContent } from "./constants";
 import CategoryCard from "./components/CategoryCard";
@@ -5,6 +10,59 @@ import styles from "./dashboard.module.css";
 
 export default function DashboardHomeScreen() {
   const content = dashboardContent;
+  const [categories, setCategories] = useState<LegalCategory[]>([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadCategories() {
+      try {
+        const response = await apiClient.get<LegalCategory[]>("/legal-categories");
+
+        if (!isMounted) {
+          return;
+        }
+
+        setCategories(
+          response.filter((category) => category.isActive !== false).sort((left, right) => {
+            return (left.sortOrder ?? 0) - (right.sortOrder ?? 0);
+          }),
+        );
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+
+        setErrorMessage(
+          error instanceof ApiError
+            ? error.message
+            : "Unable to load legal categories right now.",
+        );
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadCategories();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const displayCategories = useMemo(() => {
+    return categories.map((category, index) => ({
+      ...category,
+      accent: index === 2 ? ("secondary" as const) : ("primary" as const),
+      code: category.id.toUpperCase(),
+      highlightLabel: index === 2 ? "New Acts Included" : undefined,
+      precedentCount: category.lawType,
+    }));
+  }, [categories]);
 
   return (
     <div className={styles.contentWrap}>
@@ -28,8 +86,11 @@ export default function DashboardHomeScreen() {
         </div>
       </section>
 
+      {isLoading ? <p className={styles.statusText}>Loading legal categories...</p> : null}
+      {errorMessage ? <p className={styles.statusError}>{errorMessage}</p> : null}
+
       <section className={styles.grid}>
-        {content.categories.map((category) => (
+        {displayCategories.map((category) => (
           <CategoryCard category={category} key={category.id} />
         ))}
       </section>
