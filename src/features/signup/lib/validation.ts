@@ -21,10 +21,11 @@ export function validateSignupSubmission(
     };
   }
 
-  if (submission.password.length < 8) {
+  if (submission.password.length < 12) {
     return {
       ok: false,
-      message: "Password must be at least 8 characters long.",
+      message:
+        "Password must be at least 12 characters and meet the backend policy.",
     };
   }
 

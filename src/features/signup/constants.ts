@@ -73,8 +73,3 @@ export const signupContent: SignupViewModel = {
   },
   footer: "© 2024 International Legal Assistance Program • Secure Portal",
 };
-
-export const initialSignupActionState = {
-  message: "",
-  status: "idle",
-} as const;

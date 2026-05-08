@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import AppIcon from "@/shared/icons/AppIcon";
+import { routes } from "@/lib/routes";
+import { useAuth } from "@/shared/auth/AuthProvider";
 import { authenticatedShellContent } from "./constants";
 import styles from "./authenticated-shell.module.css";
 
@@ -15,6 +17,8 @@ export default function AuthenticatedShell({
   children,
 }: AuthenticatedShellProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const auth = useAuth();
   const content = authenticatedShellContent;
 
   return (
@@ -38,6 +42,16 @@ export default function AuthenticatedShell({
         </div>
         <div className={styles.topBarRight}>
           <button
+            className={styles.signOutButton}
+            onClick={async () => {
+              await auth.signOut();
+              router.replace(routes.signIn);
+            }}
+            type="button"
+          >
+            Sign Out
+          </button>
+          <button
             aria-label="Notifications"
             className={styles.topIconButton}
             type="button"
@@ -49,7 +63,7 @@ export default function AuthenticatedShell({
           </button>
           <div className={styles.avatarWrap}>
             <Image
-              alt={content.user.avatarAlt}
+              alt={auth.user?.fullName ?? content.user.avatarAlt}
               className={styles.avatar}
               height={32}
               src={content.user.avatarSrc}

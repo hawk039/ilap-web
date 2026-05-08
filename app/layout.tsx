@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { AuthProvider } from "@/shared/auth/AuthProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ILAP Sign Up",
-  description: "International Legal Assistance Program signup portal",
+  title: "ILAP",
+  description: "International Legal Assistance Program web application",
 };
 
 type RootLayoutProps = Readonly<{
@@ -13,7 +14,9 @@ type RootLayoutProps = Readonly<{
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }

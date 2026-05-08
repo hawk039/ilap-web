@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import {useActionState} from "react";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { apiClient, ApiError } from "@/lib/api/client";
+import type { AuthResponse } from "@/lib/api/types";
+import { routes } from "@/lib/routes";
 import AppIcon from "@/shared/icons/AppIcon";
+import { useAuth } from "@/shared/auth/AuthProvider";
 import {useSignInForm} from "../hooks/useSignInForm";
-import {
-    initialSignInActionState,
-    submitSignInAction,
-} from "../server/actions";
-import type {SignInActionState, SignInViewModel} from "../types";
+import { validateSignInSubmission } from "../lib/validation";
+import type {SignInViewModel} from "../types";
 import styles from "../signin.module.css";
 
 type SignInFormProps = {
@@ -16,14 +18,55 @@ type SignInFormProps = {
 };
 
 export default function SignInForm({form}: SignInFormProps) {
+    const auth = useAuth();
+    const router = useRouter();
     const signInForm = useSignInForm();
-    const [actionState, formAction, isPending] = useActionState<
-        SignInActionState,
-        FormData
-    >(submitSignInAction, initialSignInActionState);
+    const [isPending, setIsPending] = useState(false);
+    const [formMessage, setFormMessage] = useState<{
+        message: string;
+        status: "success" | "error";
+    } | null>(null);
+
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+        const email = String(formData.get("email") ?? "").trim();
+        const password = String(formData.get("password") ?? "");
+
+        const validation = validateSignInSubmission({ email, password });
+
+        if (!validation.ok) {
+            setFormMessage({ message: validation.message, status: "error" });
+            return;
+        }
+
+        setIsPending(true);
+        setFormMessage(null);
+
+        try {
+            const response = await apiClient.post<AuthResponse>("/auth/login", {
+                email,
+                password,
+            });
+
+            auth.setAuthSession(response);
+            router.push(routes.dashboard);
+        } catch (error) {
+            const message =
+                error instanceof ApiError ? error.message : "Unable to sign in right now.";
+
+            setFormMessage({
+                message,
+                status: "error",
+            });
+        } finally {
+            setIsPending(false);
+        }
+    }
 
     return (
-        <form action={formAction} className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
             <div>
                 <label className={styles.inputLabel} htmlFor="email">
                     <span className={styles.labelText}>Email Address</span>
@@ -77,15 +120,15 @@ export default function SignInForm({form}: SignInFormProps) {
                 </label>
             </div>
 
-            {actionState.status !== "idle" ? (
+            {formMessage ? (
                 <p
                     className={
-                        actionState.status === "error"
+                        formMessage.status === "error"
                             ? styles.formMessageError
                             : styles.formMessageSuccess
                     }
                 >
-                    {actionState.message}
+                    {formMessage.message}
                 </p>
             ) : null}
 

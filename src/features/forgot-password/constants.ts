@@ -35,8 +35,3 @@ export const forgotPasswordContent: ForgotPasswordViewModel = {
     privacyHref: routes.privacy,
   },
 };
-
-export const initialForgotPasswordActionState = {
-  message: "",
-  status: "idle",
-} as const;
