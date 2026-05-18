@@ -30,7 +30,13 @@ export type AppIconName =
   | "terminal"
   | "shoppingBag"
   | "work"
-  | "familyHistory";
+  | "familyHistory"
+  | "mic"
+  | "copy"
+  | "share"
+  | "info"
+  | "expandMore"
+  | "send";
 
 type AppIconProps = {
   name: AppIconName;
@@ -276,6 +282,52 @@ export default function AppIcon({ name, className }: AppIconProps) {
           <rect x="3" y="7" width="18" height="13" rx="2" />
           <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
           <path d="M3 12h18" />
+        </svg>
+      );
+    case "mic":
+      return (
+        <svg {...commonProps}>
+          <rect x="9" y="3" width="6" height="12" rx="3" />
+          <path d="M5 11a7 7 0 0 0 14 0" />
+          <path d="M12 18v3" />
+        </svg>
+      );
+    case "copy":
+      return (
+        <svg {...commonProps}>
+          <rect x="9" y="9" width="11" height="11" rx="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+      );
+    case "share":
+      return (
+        <svg {...commonProps}>
+          <circle cx="18" cy="5" r="3" />
+          <circle cx="6" cy="12" r="3" />
+          <circle cx="18" cy="19" r="3" />
+          <path d="m8.6 13.5 6.8 4" />
+          <path d="m15.4 6.5-6.8 4" />
+        </svg>
+      );
+    case "info":
+      return (
+        <svg {...commonProps}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 10v5" />
+          <path d="M12 7h.01" />
+        </svg>
+      );
+    case "expandMore":
+      return (
+        <svg {...commonProps}>
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      );
+    case "send":
+      return (
+        <svg {...commonProps}>
+          <path d="M22 2 11 13" />
+          <path d="m22 2-7 20-4-9-9-4Z" />
         </svg>
       );
     case "familyHistory":

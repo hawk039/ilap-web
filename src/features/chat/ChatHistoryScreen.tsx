@@ -104,61 +104,83 @@ export default function ChatHistoryScreen({
         {isLoadingConversation ? (
           <p className={styles.statusText}>Loading conversation...</p>
         ) : null}
-        <div className={styles.messageList}>
-          {messages.length === 0 ? (
-            <div className={styles.emptyConversationState}>
-              <div className={styles.emptyConversationIconWrap}>
-                <AppIcon className={styles.emptyConversationIcon} name="chat" />
-              </div>
-              <h2 className={styles.emptyConversationTitle}>
-                Start your {(conversation?.lawType ?? "legal").toLowerCase()} conversation
-              </h2>
-              <p className={styles.emptyConversationDescription}>
-                Ask your first question and the backend will persist the conversation
-                timeline for future retrieval.
-              </p>
-            </div>
-          ) : (
-            messages.map((message) => (
-              <ChatMessageCard key={message.id} message={message} />
-            ))
-          )}
+        <div className={styles.chatTimeline}>
+          <div className={styles.dateMarkerRow}>
+            <span className={styles.dateMarker}>Today</span>
+          </div>
 
-          {isSubmitting ? (
-            <div className={styles.loadingRow}>
-              <div className={styles.loadingDot} />
-              <p className={styles.loadingLabel}>
-                {content.activeState.loadingLabel}
-              </p>
-            </div>
-          ) : null}
+          <div className={styles.messageList}>
+            {messages.length === 0 ? (
+              <div className={styles.emptyConversationState}>
+                <div className={styles.emptyConversationIconWrap}>
+                  <AppIcon className={styles.emptyConversationIcon} name="chat" />
+                </div>
+                <h2 className={styles.emptyConversationTitle}>
+                  Start your {(conversation?.lawType ?? "legal").toLowerCase()} conversation
+                </h2>
+                <p className={styles.emptyConversationDescription}>
+                  Ask your first question and the backend will persist the
+                  conversation timeline for future retrieval.
+                </p>
+              </div>
+            ) : (
+              messages.map((message) => (
+                <ChatMessageCard key={message.id} message={message} />
+              ))
+            )}
+
+            {isSubmitting ? (
+              <div className={styles.loadingRow}>
+                <div className={styles.loadingDot} />
+                <p className={styles.loadingLabel}>
+                  {content.activeState.loadingLabel}
+                </p>
+              </div>
+            ) : null}
+          </div>
         </div>
 
-        <form className={styles.composerForm} onSubmit={submitQuery}>
-          <label className={styles.composerLabel} htmlFor="chat-query">
-            Ask ILAP
-          </label>
-          <div className={styles.composerInputWrap}>
-            <textarea
-              className={styles.composerInput}
-              id="chat-query"
-              onChange={(event) => setComposerValue(event.target.value)}
-              placeholder={content.activeState.composerPlaceholder}
-              rows={4}
-              value={composerValue}
-            />
-            <button
-              className={styles.primaryButton}
-              disabled={isSubmitting}
-              type="submit"
-            >
-              {content.activeState.submitLabel}
-              <AppIcon className={styles.primaryButtonIcon} name="arrowForward" />
-            </button>
+        <div className={styles.composerDock}>
+          <div className={styles.suggestionRow}>
+            {content.activeState.suggestionPrompts.map((prompt) => (
+              <button
+                className={styles.suggestionChip}
+                key={prompt}
+                onClick={() => setComposerValue(prompt)}
+                type="button"
+              >
+                {prompt}
+              </button>
+            ))}
           </div>
-          {errorMessage ? <p className={styles.errorText}>{errorMessage}</p> : null}
-          <p className={styles.helperText}>{content.activeState.helperText}</p>
-        </form>
+
+          <form className={styles.composerForm} onSubmit={submitQuery}>
+            <div className={styles.composerFrame}>
+              <textarea
+                className={styles.composerInput}
+                id="chat-query"
+                onChange={(event) => setComposerValue(event.target.value)}
+                placeholder={content.activeState.composerPlaceholder}
+                rows={1}
+                value={composerValue}
+              />
+              <div className={styles.composerActions}>
+                <button className={styles.micButton} type="button">
+                  <AppIcon className={styles.micButtonIcon} name="mic" />
+                </button>
+                <button
+                  className={styles.sendButton}
+                  disabled={isSubmitting}
+                  type="submit"
+                >
+                  <AppIcon className={styles.sendButtonIcon} name="send" />
+                </button>
+              </div>
+            </div>
+            {errorMessage ? <p className={styles.errorText}>{errorMessage}</p> : null}
+            <p className={styles.helperText}>{content.activeState.helperText}</p>
+          </form>
+        </div>
       </section>
     </div>
   );

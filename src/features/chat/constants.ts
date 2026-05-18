@@ -14,17 +14,16 @@ export const chatContent = {
     newConversationLabel: "Back to categories",
     composerPlaceholder: "Ask a follow-up question...",
     submitLabel: "Send",
+    sourceToggleLabel: "View law source",
+    suggestionPrompts: [
+      "Recent amendments in this area of law?",
+      "Draft a legal notice for non-payment",
+      "Compare this section with related provisions",
+      "What evidence requirements apply here?",
+    ],
     helperText:
       "Responses are informational and should be reviewed with a qualified legal professional.",
     loadingLabel: "ILAP is preparing a response...",
-  },
-  responseLabels: {
-    confidence: "Confidence",
-    citations: "Citations",
-    proof: "Proof and reasoning",
-    supportingSources: "Supporting sources",
-    noCitations: "No citations returned for this answer.",
-    noProof: "No proof details were returned for this answer.",
   },
   errors: {
     missingLawType: "Choose a legal category before starting a conversation.",
