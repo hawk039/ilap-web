@@ -40,7 +40,18 @@ type RequestOptions = {
 };
 
 function getBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "";
+  // In the browser, always use relative URLs so requests route through the
+  // Next.js rewrite proxy. Direct browser-to-backend calls are blocked by CORS
+  // because the Render backend does not allow the Netlify origin.
+  if (typeof window !== "undefined") {
+    return "";
+  }
+  // Server-side (SSR/SSG): call the backend directly to avoid an extra hop.
+  return (
+    process.env.BACKEND_API_BASE_URL?.replace(/\/$/, "") ??
+    process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ??
+    ""
+  );
 }
 
 function buildUrl(path: string) {
