@@ -6,21 +6,18 @@ export const signupContent: SignupViewModel = {
     name: "ILAP",
     icon: "gavel",
   },
-  navigation: [
-    { label: "About", href: routes.about },
-    { label: "Contact", href: routes.contact },
-  ],
+  navigation: [],
   headerAction: {
     label: "Sign In",
     href: routes.signIn,
   },
   hero: {
-    badge: "International Standards",
-    titlePrefix: "Empowering Global",
+    badge: "Indian Legal Support",
+    titlePrefix: "Empowering Indian",
     titleAccent: "Justice",
-    title: "Empowering Global Justice",
+    title: "Empowering Indian Justice",
     description:
-      "Join a community of legal professionals dedicated to providing world-class assistance and resources across international borders.",
+      "Join a platform focused on delivering legal assistance, research support, and practical resources tailored to the Indian justice system.",
     imageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA1gTI7JVM4Y29Sy1hn2_tKxAoDxr5LBC5JH4lc-XRJef3DUvfD8UkHX2eV7R6zteSsPJwNbFf-J1UUY-wbiIoJgumD54_ek8FmnwwrtH9Ib45NP5tDRLTR9AJCbMQXdTODH2N6fhv1zPJDC9s5eCFuxpeWMnM1shWPHgohokLOn3aWJKEBptinuyFkHGDCzDMW3xWY0DtVl8ewum7VOPOHX3-Q3wZOPTfbeMAC_ZyAg9wDUeZrdXzfGzeSxz4M8SwzmDGr8yaseD4",
     imageAlt: "Grand legal library with rows of law books",

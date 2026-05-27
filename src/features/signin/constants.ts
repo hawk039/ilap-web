@@ -6,11 +6,7 @@ export const signInContent: SignInViewModel = {
     name: "ILAP",
     icon: "gavel",
   },
-  navigation: [
-    { label: "Home", href: routes.home },
-    { label: "About", href: routes.about },
-    { label: "Support", href: routes.support },
-  ],
+  navigation: [{ label: "Home", href: routes.home }],
   headerAction: {
     label: "Sign Up",
     href: routes.home,
