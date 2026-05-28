@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: ilap-web
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: BACKEND_API_BASE_URL
+        sync: false
